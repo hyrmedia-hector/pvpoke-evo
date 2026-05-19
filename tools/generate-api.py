@@ -67,7 +67,12 @@ def generate_formats(gm):
 
 def generate_manifest(gm):
     """Walk the rankings tree and build a manifest of every rankings-*.json file."""
-    formats_lookup = {f["cup"]: f for f in gm.get("formats", [])}
+    # Build lookup from (cup, cp) -> title using merged open leagues + gamemaster formats
+    all_formats = generate_formats(gm)
+    title_lookup = {
+        (f["cup"], f["cp"]): f["title"]
+        for f in all_formats
+    }
     entries = []
 
     rankings_dir = SRC_DATA / "rankings"
@@ -78,10 +83,6 @@ def generate_manifest(gm):
         if not cup_dir.is_dir():
             continue
         cup = cup_dir.name
-        cup_title = formats_lookup.get(cup, {}).get("title", cup)
-        # Provide human-readable titles for open-league cups
-        if cup == "all":
-            cup_title = "All Pokémon"
 
         for category_dir in cup_dir.iterdir():
             if not category_dir.is_dir():
@@ -98,6 +99,8 @@ def generate_manifest(gm):
                     cp = int(cp_str)
                 except ValueError:
                     continue
+
+                cup_title = title_lookup.get((cup, cp), cup)
 
                 entries.append({
                     "cup": cup,
