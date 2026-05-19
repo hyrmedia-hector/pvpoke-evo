@@ -1,0 +1,45 @@
+name: Sync Upstream
+
+on:
+  schedule:
+    # Runs daily at 05:00 UTC
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to sync (leave empty for default branch)'
+        required: false
+        default: ''
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - name: Sync fork with upstream
+        id: sync
+        run: |
+          BRANCH="${{ github.event.inputs.branch }}"
+          if [ -z "$BRANCH" ]; then
+            BRANCH=$(gh api repos/${{ github.repository }} --jq '.default_branch')
+          fi
+          echo "Syncing branch: $BRANCH"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          gh repo sync ${{ github.repository }} --branch "$BRANCH"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create issue on sync failure
+        if: failure()
+        run: |
+          # Ensure label exists
+          gh label create "upstream-sync" --color "0366d6" --description "Upstream sync failures" 2>/dev/null || true
+
+          gh issue create \
+            --title "Upstream sync failed for branch ${{ steps.sync.outputs.branch }}" \
+            --body "The automated upstream sync failed for branch \`${{ steps.sync.outputs.branch }}\`. Please resolve conflicts manually.\n\n[View workflow run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" \
+            --label "upstream-sync"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
