@@ -1,2 +1,16 @@
 src/modules/config.php
 src/articles/article-assets
+
+# Build artifacts
+dist/
+
+# OS / editor
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Python
+__pycache__/
+*.pyc

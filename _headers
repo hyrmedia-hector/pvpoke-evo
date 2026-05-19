@@ -1,0 +1,11 @@
+/api/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300
+
+/data/rankings/manifest-native.json
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=300
+
+/data/*
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
