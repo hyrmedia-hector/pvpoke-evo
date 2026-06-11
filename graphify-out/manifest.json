@@ -1,0 +1,842 @@
+{
+  "/Users/hrivera/Git/pvpoke-evo/src/settings.php": {
+    "mtime": 1778816191.600556,
+    "hash": "78cad679d10fc8464f6ced016b346cb3"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/index.php": {
+    "mtime": 1778816191.5939074,
+    "hash": "48de6d221eab7c45d14c47e7c650e947"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/moves.php": {
+    "mtime": 1778816191.599945,
+    "hash": "1091f92a2d2bf87b0dde97816c3b0a7c"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/attack-cmp-chart.php": {
+    "mtime": 1778816191.3779893,
+    "hash": "bbd676f4dcb363ae5525ad6ad5f5d82c"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/custom-rankings.php": {
+    "mtime": 1778816191.379876,
+    "hash": "f18ba047dc257c5c4d9115ee5bd42bf8"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/rankersandbox.php": {
+    "mtime": 1778816191.6001856,
+    "hash": "1a8c0c155782df556205bdc7b03a9726"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/contact.php": {
+    "mtime": 1778816191.3781173,
+    "hash": "30e10b94762fcce62cdf5789c6aea776"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/rankings.php": {
+    "mtime": 1778816191.600276,
+    "hash": "dc9de60be70901429fbccf105e2b2f76"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/privacy.php": {
+    "mtime": 1778816191.6000652,
+    "hash": "918a2d47afb2305501346e6163ca3655"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/pokedex.php": {
+    "mtime": 1778816191.599994,
+    "hash": "e1c0d9b3653ac14393bb22706137a8c0"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/header.php": {
+    "mtime": 1778816191.5720768,
+    "hash": "791f3a684a04ae58660a38ebd8875ca4"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/ranker.php": {
+    "mtime": 1778816191.600123,
+    "hash": "4a07dac173cf4c4638d0c132d0faccf0"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/footer.php": {
+    "mtime": 1778816191.5717561,
+    "hash": "8d68d2a6e5406fbacf8b08987b28979a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/service-worker.js": {
+    "mtime": 1778816191.6004856,
+    "hash": "d41d8cd98f00b204e9800998ecf8427e"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/team-builder.php": {
+    "mtime": 1778816191.6006343,
+    "hash": "3e6f3367b90bb876f4d10a133747c2fa"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/battle.php": {
+    "mtime": 1778816191.378053,
+    "hash": "15c6f6dba26c9abfa0ccee5137fe702b"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/gm-editor/index.php": {
+    "mtime": 1778816191.5718937,
+    "hash": "10be8a0396d64cec32b446384cfc32fe"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/gm-editor/move.php": {
+    "mtime": 1778816191.5719604,
+    "hash": "6d70dc9da6833954453e43a4095dcf6b"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/gm-editor/pokemon.php": {
+    "mtime": 1778816191.5720139,
+    "hash": "758529d0e273e2eea6b1280ddc4d481d"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/gm-editor/edit.php": {
+    "mtime": 1778816191.5718424,
+    "hash": "9026af23dca085ae84e1a427026896d9"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/RankingMain.js": {
+    "mtime": 1778816191.594196,
+    "hash": "6cfe3558ca00f3a8dbe0f3a20f038a7d"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/GameMaster.js": {
+    "mtime": 1778816191.5940242,
+    "hash": "2362d2d291e05a5350e47815a590a105"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/RankerMain.js": {
+    "mtime": 1778816191.5941415,
+    "hash": "311f76dee68ee94e007281e0e7bf57e4"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/Main.js": {
+    "mtime": 1778816191.594089,
+    "hash": "b3d6b9c60e53a380b5c9c096045c5c96"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/battle/Battle.js": {
+    "mtime": 1778816191.5943303,
+    "hash": "a979cc3b11d10f0b1f3b6fa4786b7298"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/battle/DamageCalculator.js": {
+    "mtime": 1778816191.5944567,
+    "hash": "bc0e715387603a2e603c48497d01ebc7"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/battle/actions/ActionLogic.js": {
+    "mtime": 1778816191.594561,
+    "hash": "40dd0225045fc0a7f08aa9380f473ea0"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/battle/rankers/TeamRanker.js": {
+    "mtime": 1778816191.594825,
+    "hash": "29ffa48230d839fd006838571b0207da"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/battle/rankers/RankerOverall.js": {
+    "mtime": 1778816191.59477,
+    "hash": "f82b8420ec43aa01880c6cf78fb41234"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/battle/rankers/Ranker.js": {
+    "mtime": 1778816191.5946932,
+    "hash": "5751622a484809fa22ba40a48703bca4"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/battle/timeline/TimelineAction.js": {
+    "mtime": 1778816191.5949018,
+    "hash": "34375b7fa78afb06d8f695a173456961"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/battle/timeline/TimelineEvent.js": {
+    "mtime": 1778816191.5949485,
+    "hash": "3c740b19ebc7c6caafc975fab474953a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/PokeSearch.js": {
+    "mtime": 1778816191.5965853,
+    "hash": "15b5894d835e37f34761bbdb7ff18e2d"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/Interface.js": {
+    "mtime": 1778816191.5961633,
+    "hash": "10f4ca56f7e1d99ccfeb0235e7b3db96"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/AttackChartInterface.js": {
+    "mtime": 1778816191.59583,
+    "hash": "989ec2288b8e0d97393f892fb7e3bd7d"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/SortableTable.js": {
+    "mtime": 1778816191.5972147,
+    "hash": "df286a75a7025ff641d1bb0e0f0c53b2"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/HomeInterface.js": {
+    "mtime": 1778816191.5960257,
+    "hash": "53c0f7b3d217dff1f765fc2ddc19d65a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/RankingInterface.js": {
+    "mtime": 1778816191.597101,
+    "hash": "5e44aa7228f8b83cae07ed46666ac0a3"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/ModalWindow.js": {
+    "mtime": 1778816191.5963454,
+    "hash": "98075ae49204368acf97ee194ffd3f33"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/Pokebox.js": {
+    "mtime": 1778816191.5968266,
+    "hash": "a54bec068ea605f5263e43c43e106f3c"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/ArticlesInterface.js": {
+    "mtime": 1778816191.5957503,
+    "hash": "ef0c66f2380c238ae515f09599ea0f5a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/TeamInterface.js": {
+    "mtime": 1778816191.5973008,
+    "hash": "c1558d48cd1a377b2c79af683ac59b3b"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/ArticleChecklist.js": {
+    "mtime": 1778816191.5956893,
+    "hash": "e804ffe1eed62148c4c1ffa09d6bcb08"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/RankerInterface.js": {
+    "mtime": 1778816191.5970008,
+    "hash": "259d1b44b23be6ebe06280aa6a0075e3"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/PokeSelect.js": {
+    "mtime": 1778816191.5967183,
+    "hash": "50c2992926175da361fbed3ad28c4623"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/MovesInterface.js": {
+    "mtime": 1778816191.5964074,
+    "hash": "f38072772c5395d609c61ab6ee2f03bb"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/PokedexInterface.js": {
+    "mtime": 1778816191.5968783,
+    "hash": "61d28ce717be135bd5e13649002aa50d"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/TrainRankingInterface.js": {
+    "mtime": 1778816191.5973885,
+    "hash": "590202f25207be18be97413bef3676de"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/PokeMultiSelect.js": {
+    "mtime": 1778816191.5965142,
+    "hash": "0c65ec0fda8cdf60dbb12365146ef7e5"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/Settings.js": {
+    "mtime": 1778816191.5971606,
+    "hash": "78e073a2028495a1c9a1cf941d9a672b"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/BattleHistogram.js": {
+    "mtime": 1778816191.5958967,
+    "hash": "74285882fe445e93d0c55ddfdbca59b6"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/CustomRankingInterface.js": {
+    "mtime": 1778816191.5959709,
+    "hash": "0ba18c5ddc51d9227809c52c393b200e"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/interface/RSSReader.js": {
+    "mtime": 1778816191.596931,
+    "hash": "13cfcc5aaea4f2dfc823fa32bc2cc197"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/training/MatchHandler.js": {
+    "mtime": 1778816191.598127,
+    "hash": "1b7e69053f0e0bc276ab8bcfa2e17987"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/training/TrainingAnalytics.js": {
+    "mtime": 1778816191.5984077,
+    "hash": "9f5c09318c39652984a9084a0e7788e4"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/training/DecisionOption.js": {
+    "mtime": 1778816191.5980754,
+    "hash": "4e2f1221944b84400bf6f12363b93ee4"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/training/TrainingEditor.js": {
+    "mtime": 1778816191.5984719,
+    "hash": "2c05a8b598aa4c78d37f82f2f9d21075"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/training/TrainingAI.js": {
+    "mtime": 1778816191.5982263,
+    "hash": "58e26dafca600dde8f05ebe07044b6b1"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/training/TrainingSetupInterface.js": {
+    "mtime": 1778816191.598538,
+    "hash": "6b211c451d0bc1b564369956bd21b4da"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/training/BattleInterface.js": {
+    "mtime": 1778816191.5980167,
+    "hash": "b9b4c3e400e2c0d9d60c4aaf9d4eee9b"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/pokemon/Player.js": {
+    "mtime": 1778816191.5977693,
+    "hash": "df52178616bd44b23640af1c3e43bcba"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/pokemon/Pokemon.js": {
+    "mtime": 1778816191.5978875,
+    "hash": "b173c39aae098d78b02b8ddb1f9ab6e1"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/libs/jquery-3.3.1.min.js": {
+    "mtime": 1778816191.5976806,
+    "hash": "4b57cf46dc8cb95c4cca54afc85e9540"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/libs/hexagon-chart.js": {
+    "mtime": 1778816191.5975115,
+    "hash": "2ed0710503bd1f1f68415e2b73ccc700"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/devtools/OverrideInterface.js": {
+    "mtime": 1778816191.5950406,
+    "hash": "7a5f2995b85dc6efa724cc6c78d0e905"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/devtools/RSSFeedInterface.js": {
+    "mtime": 1778816191.5950873,
+    "hash": "8744c85826cefeff43c880b37635e2e3"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/devtools/gm-editor/GMEditorInterface.js": {
+    "mtime": 1778816191.5952036,
+    "hash": "a7b821f311bf9cf4e6d9b4e7f1219395"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/devtools/gm-editor/GMEditorUtils.js": {
+    "mtime": 1778816191.5955532,
+    "hash": "6d8d5bb428709cf3416af2bcbae67c3f"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/devtools/gm-editor/GMEditorTableInterface.js": {
+    "mtime": 1778816191.595486,
+    "hash": "5e2e6e901be976e75ca097116e8b7303"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/devtools/gm-editor/GMEditorMoveInterface.js": {
+    "mtime": 1778816191.5952961,
+    "hash": "4439eb006d42c6ecd8fbca7a37d2cc60"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/js/devtools/gm-editor/GMEditorPokeInterface.js": {
+    "mtime": 1778816191.5954022,
+    "hash": "4d1b27edb8ae7e3dbcc43631f29b0ca9"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/rss/feedEditor.php": {
+    "mtime": 1778816191.600408,
+    "hash": "2a183771be27652251439568373bf386"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/index.php": {
+    "mtime": 1778816191.3762677,
+    "hash": "e52bca5cd797166988d013277c66d024"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/22-04-stufful.php": {
+    "mtime": 1778816191.373666,
+    "hash": "113acf9731e7964b80b88ed90331ada3"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/23-01-chespin.php": {
+    "mtime": 1778816191.373983,
+    "hash": "bbc7d788bbc06b31feca0ca8248eaa61"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/24-06-goomy.php": {
+    "mtime": 1778816191.3745027,
+    "hash": "73381a0908456641fea451298d34b3e7"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/23-07-poliwag.php": {
+    "mtime": 1778816191.3742163,
+    "hash": "a1988673d1900ed50493f08807cf79f2"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/22-05-geodude.php": {
+    "mtime": 1778816191.373718,
+    "hash": "d24f7d1a440ade8f2c19a24cab47f82d"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/22-08-zigzagoon.php": {
+    "mtime": 1778816191.3738241,
+    "hash": "077cb2c71195e5417d8f730ea15f5239"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/23-07-axew.php": {
+    "mtime": 1778816191.3741567,
+    "hash": "8cb094c10c2a6442e05978b7aca03304"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/23-04-togetic.php": {
+    "mtime": 1778816191.3741038,
+    "hash": "68cd400597c2ef6c8a7993a1952a5c0e"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/25-08-rookidee.php": {
+    "mtime": 1778816191.3746061,
+    "hash": "8db13a13b84aeaf507c0ced013fd864a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/24-04-bellsprout.php": {
+    "mtime": 1778816191.3744488,
+    "hash": "2b8304894f1af7e047ea1fce5c55a15f"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/23-09-grubbin.php": {
+    "mtime": 1778816191.3743227,
+    "hash": "f480337b076bb8cd7c6d0acd12991bf9"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/22-02-hoppip.php": {
+    "mtime": 1778816191.3735588,
+    "hash": "d4e2428cae217e57c4fdb268d69354be"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/22-03-sandshrew.php": {
+    "mtime": 1778816191.3736162,
+    "hash": "45b9e144b8f0555f6eb25875d7aea4c0"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/25-09-flabebe.php": {
+    "mtime": 1778816191.3746574,
+    "hash": "cc56edca0d06e381cefb4bd51b4e0ba2"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/24-11-mankey.php": {
+    "mtime": 1778816191.3745582,
+    "hash": "d4ecb8c9ad1b1775dbf0d187db2a13a4"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/23-03-slowpoke.php": {
+    "mtime": 1778816191.3740523,
+    "hash": "df292c9f67d9d5f42e629e0b390f75d1"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/23-11-wooper.php": {
+    "mtime": 1778816191.374386,
+    "hash": "4eef1b32033127775b6961a7151dcf90"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/23-08-froakie.php": {
+    "mtime": 1778816191.3742688,
+    "hash": "18a21f86b36f9ca626e50baa8b071c7b"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/22-11-teddiursa.php": {
+    "mtime": 1778816191.3739338,
+    "hash": "afcc02e58da3e4d88b86d68f9d925a14"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/22-06-deino.php": {
+    "mtime": 1778816191.3737664,
+    "hash": "bbd37fc75306d863c35c0506131e8d79"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/22-10-litwick.php": {
+    "mtime": 1778816191.373877,
+    "hash": "674cbf30d030c3c698e50f69477c629e"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/community-day/templates/checklist-template.php": {
+    "mtime": 1778816191.3759458,
+    "hash": "100cd1f9a8e869b55d28f014235916b9"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/development/developer-notes-1-27-0.php": {
+    "mtime": 1778816191.3760383,
+    "hash": "acead4430dc59076353017ae156d7059"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/development/developing-trainer-battle-ai.php": {
+    "mtime": 1778816191.3761272,
+    "hash": "d75e76cfab9afa8d7d08d002c2a7fc56"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/development/personal-update-1-26-26.php": {
+    "mtime": 1778816191.3761923,
+    "hash": "1f86854db2a5350a287dd2246cb3ac98"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/legacy/hoenn-pokemon-hunt-pvp.php": {
+    "mtime": 1778816191.3774724,
+    "hash": "d91990b40722a9c8f3b537c96d00df6f"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/legacy/april-2020-update-highlights.php": {
+    "mtime": 1778816191.3769872,
+    "hash": "10d29ddbd1c8b5f393ce8d34d26f383e"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/legacy/freefolk-guide-kingdom-cup.php": {
+    "mtime": 1778816191.3773954,
+    "hash": "b6f18391d321c99b68d973ac6b00fbee"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/legacy/cliffhanger-team-building.php": {
+    "mtime": 1778816191.3771634,
+    "hash": "e2852a473240212af8373e40c17a030a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/legacy/early-2019-update-highlights.php": {
+    "mtime": 1778816191.3772354,
+    "hash": "48c3386d40bd5a80264c3b0c8a8bc8bb"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/legacy/mirror-cup-past-metas.php": {
+    "mtime": 1778816191.3775587,
+    "hash": "6dd584cd3667075fbf19d4848da5f71e"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/legacy/choose-your-champions.php": {
+    "mtime": 1778816191.377085,
+    "hash": "cd4861dc4d160bb6da25bdd2e2bdfe7b"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/22-11-shadow-predictions.php": {
+    "mtime": 1778816191.376752,
+    "hash": "f06e4f7c10154e74b86cf94bcf9e7f6e"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/23-01-season-of-mythical-wishes-starter-packs.php": {
+    "mtime": 1778816191.3768046,
+    "hash": "1b2a6df079233ea4530da2c5832ffcf7"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/22-03-great-league-meta-snapshot.php": {
+    "mtime": 1778816191.3763525,
+    "hash": "3d81f7106458218d99a9c9196fabf290"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/22-07-shadow-pokemon-pvp.php": {
+    "mtime": 1778816191.3767085,
+    "hash": "f7a1cdb8018b1aadef369c5c03de8417"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/22-06-season-11-master-league-starter-pack.php": {
+    "mtime": 1778816191.3765862,
+    "hash": "1ba5bddc81ed36f4e1d521d6c9d07f1d"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/22-05-season-11-great-league-starter-pack.php": {
+    "mtime": 1778816191.3765123,
+    "hash": "e246c4f62ae961a705706f1036c71b71"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/22-06-season-11-ultra-league-starter-pack.php": {
+    "mtime": 1778816191.3766553,
+    "hash": "f1c2ecdfdb47888f071eca5b41f4539d"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/22-05-latias-latios-counters.php": {
+    "mtime": 1778816191.3764563,
+    "hash": "7ae6c0cc5e4377f8045e4993ad3a7c02"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/22-05-friend-trade-tier-list.php": {
+    "mtime": 1778816191.3764005,
+    "hash": "b60fe3060e056a0728a500c2b5cd4489"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/23-10-adventures-abound-great-league-starter-pack.php": {
+    "mtime": 1778816191.376853,
+    "hash": "0379e7edfa32b1695c494ee1eec9bf11"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/infographics/24-08-shared-skies-great-league-starter-pack.php": {
+    "mtime": 1778816191.3769014,
+    "hash": "095a8c90a68ace00a82b89a0f43a2f19"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/strategy/best-elite-tm-candidates-pvp.php": {
+    "mtime": 1778816191.377656,
+    "hash": "d23804898a7cf430fe5b47a83e79b7e5"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/strategy/tournament-guide.php": {
+    "mtime": 1778816191.3778346,
+    "hash": "b1d95cc06e32e150632afcfb108e7127"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/strategy/ultimate-guide-to-team-building.php": {
+    "mtime": 1778816191.3779144,
+    "hash": "616fd065fa0e8d81b229b5541492b60c"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/strategy/guide-to-fast-move-registration.php": {
+    "mtime": 1778816191.3777287,
+    "hash": "c513014d344ed97eeeed6132311c0783"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/scripts/pretty-format-json.js": {
+    "mtime": 1778816191.6004698,
+    "hash": "2b03280a60c449c81925428044c2bbb0"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/train/index.php": {
+    "mtime": 1778816191.6058252,
+    "hash": "21b310af907090c50d0d2cad26eb4950"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/train/editor.php": {
+    "mtime": 1778816191.6057758,
+    "hash": "a82f1e60e0b2a4d8ef4e227283195b87"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/train/analytics.php": {
+    "mtime": 1778816191.6057158,
+    "hash": "60908700ec7415d61cb2d374ccc024b3"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/train/analysis.php": {
+    "mtime": 1778816191.6052954,
+    "hash": "a2d45775dcc3382376b0aadb9714b6f6"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/train/modules/top.php": {
+    "mtime": 1778816191.6060493,
+    "hash": "36c4d88775f386ffe0b2adce48fd49a4"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/train/modules/controls.php": {
+    "mtime": 1778816191.6058977,
+    "hash": "248317db4e2e7d715561f13d22a39835"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/train/modules/scene.php": {
+    "mtime": 1778816191.6059968,
+    "hash": "6e10d250f15e7345511aa3cc2dcb54d6"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/train/modules/end-screen.php": {
+    "mtime": 1778816191.6059475,
+    "hash": "acdf1d0f861b4ffcda36cbdd5ca67291"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/index.php": {
+    "mtime": 1778816191.604341,
+    "hash": "2c86fe13166c016e73cc6853d573ce6f"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/header.php": {
+    "mtime": 1778816191.6013916,
+    "hash": "bb242a0a55dd94db83748fb7f1395da6"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/footer.php": {
+    "mtime": 1778816191.6013088,
+    "hash": "480ed653e2c4f5a5639de3baeb850884"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/js/Trait.js": {
+    "mtime": 1778816191.6048398,
+    "hash": "e89cc0a37994406e926ae8ed50544ed5"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/js/ModalWindow.js": {
+    "mtime": 1778816191.6045623,
+    "hash": "98075ae49204368acf97ee194ffd3f33"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/js/TeraInterface.js": {
+    "mtime": 1778816191.6047077,
+    "hash": "688e13254cfbf9c23ecba3a01cc00491"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/js/GameMaster.js": {
+    "mtime": 1778816191.6044517,
+    "hash": "40e3afce58a883a0abf000db689c02d6"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/js/TeraRanker.js": {
+    "mtime": 1778816191.6047845,
+    "hash": "23853d9227b09c6210fe7ccbb3e09104"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/js/Main.js": {
+    "mtime": 1778816191.6045077,
+    "hash": "637d54f90048abda3ab316593251263a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/js/Pokemon.js": {
+    "mtime": 1778816191.6046202,
+    "hash": "19207c6b79104bc6b76fe79d85ae452e"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/modules/ads/nitro-sidebar-left-300.php": {
+    "mtime": 1778816191.60506,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/modules/ads/nitro-sidebar-left.php": {
+    "mtime": 1778816191.605111,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/modules/ads/mobile-320.php": {
+    "mtime": 1778816191.6050034,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/modules/ads/nitro-sidebar-right.php": {
+    "mtime": 1778816191.6051984,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/modules/ads/base-code.php": {
+    "mtime": 1778816191.604944,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/modules/ads/nitro-sidebar-right-300.php": {
+    "mtime": 1778816191.605155,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/developer-panel.php": {
+    "mtime": 1778816191.5992067,
+    "hash": "69dbb945f44643b48056adb72a8c0071"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/leagueselect.php": {
+    "mtime": 1778816191.599302,
+    "hash": "153f4b5dcbb291e765f4851cc283f337"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/cupselect.php": {
+    "mtime": 1778816191.5991635,
+    "hash": "9d3d34a29e41bed27090d542e9cc39da"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/search-string-help.php": {
+    "mtime": 1778816191.599832,
+    "hash": "f4b7a46659d0c93a2f280a17ddd46951"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/search-string-help-moves.php": {
+    "mtime": 1778816191.599778,
+    "hash": "85096a4630585e739c06504552be9025"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/pokeselect.php": {
+    "mtime": 1778816191.5994895,
+    "hash": "6e9dbb0d4897ad12569fcabdf1df2123"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/config.php": {
+    "mtime": 1778816191.5991223,
+    "hash": "6a311db0daf93eca1d7d6d541e4383d4"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/articlepreview.php": {
+    "mtime": 1778816191.5990772,
+    "hash": "43876d70c5b4c743504cd34c436b0acb"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/analytics.php": {
+    "mtime": 1778816191.5990288,
+    "hash": "12fc08e12a6ec88b7e772eed0b275528"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/pokemultiselect.php": {
+    "mtime": 1778816191.5994189,
+    "hash": "b9c66a54860663cc930b65264e57049c"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/rankingdetails.php": {
+    "mtime": 1778816191.5995646,
+    "hash": "7c679802024017d800e50a7af45573ec"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/formatselect.php": {
+    "mtime": 1778816191.5992537,
+    "hash": "22e107c3d32f825c19641f32410ea5b5"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/search-traits.php": {
+    "mtime": 1778816191.5998838,
+    "hash": "357210e26dab1bbf43588830b3b56f94"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/pokebox.php": {
+    "mtime": 1778816191.599359,
+    "hash": "b472d5e67440e90371d4561aa3014647"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/ads/header-728.php": {
+    "mtime": 1778816191.5987234,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/ads/body-728.php": {
+    "mtime": 1778816191.5986865,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/ads/nitro-sidebar-left-300.php": {
+    "mtime": 1778816191.5988514,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/ads/nitro-sidebar-left.php": {
+    "mtime": 1778816191.5989013,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/ads/mobile-320.php": {
+    "mtime": 1778816191.59876,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/ads/nitro-sidebar-right.php": {
+    "mtime": 1778816191.5989845,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/ads/base-code.php": {
+    "mtime": 1778816191.5986464,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/ads/nitro-desktop-anchor.php": {
+    "mtime": 1778816191.5988014,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/ads/nitro-sidebar-right-300.php": {
+    "mtime": 1778816191.598946,
+    "hash": "defff58b26f7e955438899b8646d4409"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/scripts/battle-scripts.php": {
+    "mtime": 1778816191.59966,
+    "hash": "d79da5e9807bf436fae29f12a436c768"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/modules/scripts/train-scripts.php": {
+    "mtime": 1778816191.5997052,
+    "hash": "ab2b97c1925f837567a678d764691120"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/parseEvolution.php": {
+    "mtime": 1778816191.3964107,
+    "hash": "d878adba0f704898d0ba7abc4387c3fa"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/parseMoveCost.php": {
+    "mtime": 1778816191.3964565,
+    "hash": "f43ab28389288902707055812aca80a4"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/compile.php": {
+    "mtime": 1778816191.3800077,
+    "hash": "c7694d63c254be06af74ac1748a0e9d1"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/settingsCookie.php": {
+    "mtime": 1778816191.5665915,
+    "hash": "a81a46680a0ad2abc52871c8d2f2e54a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/parseMoves.php": {
+    "mtime": 1778816191.3965154,
+    "hash": "4e4c4d8e87270f22b1bc743b9ccdf5db"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/groupCookie.php": {
+    "mtime": 1778816191.3924055,
+    "hash": "b8a57c65180df04cac8d9169071c193e"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/parseElite.php": {
+    "mtime": 1778816191.3963585,
+    "hash": "1374b140eb719a2c553ac04c4b1522e7"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/overrideEditor.php": {
+    "mtime": 1778816191.3941255,
+    "hash": "2c44b57b0fbc8ba21ef890831ee9d8c5"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/movesets.php": {
+    "mtime": 1778816191.394062,
+    "hash": "191ededc5e5e602c6f32a9ef645d6278"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/write.php": {
+    "mtime": 1778816191.5716882,
+    "hash": "cc73b2efc97bb418e766d85ae4226362"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/parse.php": {
+    "mtime": 1778816191.3963096,
+    "hash": "68178b9e30b4b5c6e9351da0eab4348a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/formats.php": {
+    "mtime": 1778816191.3800862,
+    "hash": "d1aaf2635ae8d12f807031b3ee226a4f"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/training/training.sql": {
+    "mtime": 1778816191.5716326,
+    "hash": "0e5a056459c75cdcecb7c89c161935e2"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/training/getTraining.php": {
+    "mtime": 1778816191.5679333,
+    "hash": "5faca9ba487e5c13476874e117dec70a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/data/training/postTraining.php": {
+    "mtime": 1778816191.567993,
+    "hash": "a0a96709170b9397f86cda002d464f59"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/README.md": {
+    "mtime": 1778816191.3729734,
+    "hash": "13e0d26d485a27d11356e51f4a0fb2dc"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/docker/docker-compose.yml": {
+    "mtime": 1778816191.373106,
+    "hash": "f4e49ae6276520433f56406a1a7dd3b6"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/articles/article-assets/developer-notes-1-27-0/thumb.jpg": {
+    "mtime": 1778816191.3734002,
+    "hash": "01c6a4b1ed1ff2407e789cb447552bf3"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/pattern.png": {
+    "mtime": 1778816191.6028664,
+    "hash": "2f8215d0609f5b7e896f69b4a43f1c3a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/options.png": {
+    "mtime": 1778816191.6023278,
+    "hash": "ad6db7209886c7f4dba169cb339173c9"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/og.jpg": {
+    "mtime": 1778816191.6022754,
+    "hash": "9178975c75955f0cb678a2f42381422b"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/bg.jpg": {
+    "mtime": 1778816191.6019437,
+    "hash": "12a23293453f1d00815786c72328792b"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/dark.png": {
+    "mtime": 1778816191.603101,
+    "hash": "035822266c444ec18f092b8d809ef732"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/fire.png": {
+    "mtime": 1778816191.6033638,
+    "hash": "690404a53dba56aacdca1361e9c4c84d"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/dragon.png": {
+    "mtime": 1778816191.6031616,
+    "hash": "ae55fa1dd8ecdb5b945fe8caf81ca41c"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/electric.png": {
+    "mtime": 1778816191.60321,
+    "hash": "babee10660afdb0d25a8794e15f959fb"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/fairy.png": {
+    "mtime": 1778816191.6032596,
+    "hash": "d3423e5b327634e1e13a821d4ad9528e"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/rock.png": {
+    "mtime": 1778816191.6041594,
+    "hash": "bfa3bcd5c802739121512c5e9350c6cc"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/ghost.png": {
+    "mtime": 1778816191.6035755,
+    "hash": "78520603d1963ad2dff7c4e226b92e14"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/poison.png": {
+    "mtime": 1778816191.6039596,
+    "hash": "d6f001023d5725a4d43c6b43719a7d00"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/flying.png": {
+    "mtime": 1778816191.6034143,
+    "hash": "82c24fcf67c9ef2a272c225e1bdbc671"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/grass.png": {
+    "mtime": 1778816191.6036367,
+    "hash": "f28bb1fa5788028ab682f9d45863d46d"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/ice.png": {
+    "mtime": 1778816191.6038384,
+    "hash": "3b1e4e7807cec4573bf19132ce56c108"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/water.png": {
+    "mtime": 1778816191.604276,
+    "hash": "fc4e96b508ffce02ae4bcf1b070bbc5a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/ground.png": {
+    "mtime": 1778816191.6036987,
+    "hash": "ca21fd6d743e6416ab27656a6f19e421"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/normal.png": {
+    "mtime": 1778816191.6039019,
+    "hash": "277a7876303e01a12af2335bb649316a"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/psychic.png": {
+    "mtime": 1778816191.6040998,
+    "hash": "c9b8b239b10b41425b3b34eea478a8c7"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/bug.png": {
+    "mtime": 1778816191.6030457,
+    "hash": "11bf3e36ccfb8221536b26f5036050e6"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/fighting.png": {
+    "mtime": 1778816191.6033084,
+    "hash": "e9a5fac8abecb1a8a8497f759339b908"
+  },
+  "/Users/hrivera/Git/pvpoke-evo/src/tera/img/types/steel.png": {
+    "mtime": 1778816191.6042185,
+    "hash": "1efc2481918df4a4637510b6db90184a"
+  }
+}
