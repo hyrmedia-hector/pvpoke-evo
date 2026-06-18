@@ -79,6 +79,7 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME || 'pvpoke-data' }}
           DATA_VERSION: ${{ steps.catalog.outputs.version }}
+          R2_UPLOAD_CONCURRENCY: ${{ vars.R2_UPLOAD_CONCURRENCY || '8' }}
         run: |
           set -euo pipefail
           python3 - <<'PY' > /tmp/content-types.tsv
@@ -95,12 +96,39 @@ jobs:
                   content_type = 'application/octet-stream'
               print(f"{path}\t{rel}\t{content_type}")
           PY
-          while IFS=$'\t' read -r file rel content_type; do
-            wrangler r2 object put "$R2_BUCKET_NAME/versions/$DATA_VERSION/$rel" \
+
+          TOTAL="$(wc -l < /tmp/content-types.tsv | tr -d ' ')"
+          echo "Uploading $TOTAL objects to R2 with concurrency $R2_UPLOAD_CONCURRENCY"
+          echo 0 > /tmp/r2-upload-count
+
+          upload_one() {
+            local line="$1"
+            local file rel content_type count log_path
+            IFS=$'\t' read -r file rel content_type <<< "$line"
+            log_path="/tmp/r2-object-${rel//[^A-Za-z0-9_.-]/_}.log"
+            if ! wrangler r2 object put "$R2_BUCKET_NAME/versions/$DATA_VERSION/$rel" \
               --remote \
               --file "$file" \
-              --content-type "$content_type"
-          done < /tmp/content-types.tsv
+              --content-type "$content_type" \
+              >"$log_path" 2>&1; then
+              cat "$log_path"
+              return 1
+            fi
+
+            {
+              flock 9
+              count="$(( $(cat /tmp/r2-upload-count) + 1 ))"
+              echo "$count" > /tmp/r2-upload-count
+              if [ $((count % 25)) -eq 0 ] || [ "$count" -eq "$TOTAL" ]; then
+                echo "Uploaded $count/$TOTAL objects"
+              fi
+            } 9>/tmp/r2-upload-count.lock
+          }
+          export -f upload_one
+          export R2_BUCKET_NAME DATA_VERSION TOTAL
+
+          xargs -r -P "$R2_UPLOAD_CONCURRENCY" -n 1 -d '\n' \
+            bash -c 'upload_one "$1"' _ < /tmp/content-types.tsv
 
       - name: Promote current data version
         env:
