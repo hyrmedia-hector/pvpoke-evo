@@ -97,6 +97,7 @@ jobs:
           PY
           while IFS=$'\t' read -r file rel content_type; do
             wrangler r2 object put "$R2_BUCKET_NAME/versions/$DATA_VERSION/$rel" \
+              --remote \
               --file "$file" \
               --content-type "$content_type"
           done < /tmp/content-types.tsv
@@ -108,6 +109,7 @@ jobs:
           R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME || 'pvpoke-data' }}
         run: |
           wrangler r2 object put "$R2_BUCKET_NAME/current.json" \
+            --remote \
             --file dist/current.json \
             --content-type "application/json; charset=utf-8"
 
