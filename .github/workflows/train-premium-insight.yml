@@ -1,0 +1,110 @@
+name: Train Premium Insight Model
+
+on:
+  workflow_run:
+    workflows: ["Deploy Data to Cloudflare R2 and Pages"]
+    types:
+      - completed
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  train:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: macos-15
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Set generated metadata
+        run: |
+          GENERATED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "PVPOKE_SOURCE_COMMIT=${{ github.event.workflow_run.head_sha || github.sha }}" >> "$GITHUB_ENV"
+          echo "PVPOKE_GENERATED_AT=$GENERATED_AT" >> "$GITHUB_ENV"
+          echo "PVPOKE_PROMOTED_AT=$GENERATED_AT" >> "$GITHUB_ENV"
+
+      - name: Generate API files
+        run: python3 tools/generate-api.py
+
+      - name: Validate generated API files
+        run: python3 tools/generate-api.py --validate-only
+
+      - name: Resolve data version
+        id: catalog
+        run: |
+          VERSION="$(python3 - <<'PY'
+          import json
+          print(json.load(open('dist/v1/catalog.json'))['version'])
+          PY
+          )"
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "Resolved data version: $VERSION"
+
+      - name: Train Premium Insight models
+        run: |
+          swift run --package-path tools/premium-insight PremiumInsightTrainer \
+            --data-root src/data \
+            --catalog dist/v1/catalog.json \
+            --output premium-insight-dist
+
+      - name: Install Wrangler
+        run: npm install -g wrangler
+
+      - name: Upload immutable Premium Insight artifacts
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME || 'pvpoke-data' }}
+          DATA_VERSION: ${{ steps.catalog.outputs.version }}
+        run: |
+          set -euo pipefail
+          ARTIFACT_DIR="premium-insight-dist/ml/versions/$DATA_VERSION/premium-insight-v1"
+          test -d "$ARTIFACT_DIR"
+          find "$ARTIFACT_DIR" -type f \( -name '*.mlmodel' -o -name 'manifest.json' \) -print0 |
+            while IFS= read -r -d '' file; do
+              rel="${file#premium-insight-dist/}"
+              case "$file" in
+                *.json) content_type="application/json; charset=utf-8" ;;
+                *) content_type="application/octet-stream" ;;
+              esac
+              wrangler r2 object put "$R2_BUCKET_NAME/$rel" \
+                --remote \
+                --file "$file" \
+                --content-type "$content_type"
+            done
+
+      - name: Promote Premium Insight sidecar
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME || 'pvpoke-data' }}
+        run: |
+          wrangler r2 object put "$R2_BUCKET_NAME/ml/current/premium-insight-v1.json" \
+            --remote \
+            --file premium-insight-dist/ml/current/premium-insight-v1.json \
+            --content-type "application/json; charset=utf-8"
+
+      - name: Verify Worker catalog advertises compatible sidecar
+        env:
+          UNIFIED_API_BASE_URL: ${{ vars.UNIFIED_API_BASE_URL || 'https://api.ivleague-pogo.app' }}
+          DATA_VERSION: ${{ steps.catalog.outputs.version }}
+        run: |
+          curl --fail-with-body "$UNIFIED_API_BASE_URL/v1/catalog" > /tmp/catalog.json
+          python3 - <<'PY'
+          import json
+          import os
+          catalog = json.load(open('/tmp/catalog.json'))
+          model = catalog.get('mlModels', {}).get('premiumInsightV1')
+          if not model:
+              raise SystemExit('premiumInsightV1 missing from Worker catalog')
+          if model.get('dataVersion') != os.environ['DATA_VERSION']:
+              raise SystemExit('premiumInsightV1 dataVersion mismatch')
+          if model.get('schemaVersion') != 1:
+              raise SystemExit('premiumInsightV1 schemaVersion mismatch')
+          print('Premium Insight catalog sidecar verified.')
+          PY
