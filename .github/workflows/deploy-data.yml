@@ -14,6 +14,10 @@ on:
       - completed
     branches: [master]
 
+concurrency:
+  group: deploy-data-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   deploy:
     # Skip deploy if the upstream sync failed
@@ -79,7 +83,8 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME || 'pvpoke-data' }}
           DATA_VERSION: ${{ steps.catalog.outputs.version }}
-          R2_UPLOAD_CONCURRENCY: ${{ vars.R2_UPLOAD_CONCURRENCY || '8' }}
+          R2_UPLOAD_CONCURRENCY: ${{ vars.R2_UPLOAD_CONCURRENCY || '4' }}
+          R2_UPLOAD_ATTEMPTS: ${{ vars.R2_UPLOAD_ATTEMPTS || '5' }}
         run: |
           set -euo pipefail
           python3 - <<'PY' > /tmp/content-types.tsv
@@ -103,17 +108,32 @@ jobs:
 
           upload_one() {
             local line="$1"
-            local file rel content_type count log_path
+            local file rel content_type count log_path attempt exit_code sleep_for
             IFS=$'\t' read -r file rel content_type <<< "$line"
             log_path="/tmp/r2-object-${rel//[^A-Za-z0-9_.-]/_}.log"
-            if ! wrangler r2 object put "$R2_BUCKET_NAME/versions/$DATA_VERSION/$rel" \
-              --remote \
-              --file "$file" \
-              --content-type "$content_type" \
-              >"$log_path" 2>&1; then
+            attempt=1
+
+            while [ "$attempt" -le "$R2_UPLOAD_ATTEMPTS" ]; do
+              if wrangler r2 object put "$R2_BUCKET_NAME/versions/$DATA_VERSION/$rel" \
+                --remote \
+                --file "$file" \
+                --content-type "$content_type" \
+                >"$log_path" 2>&1; then
+                break
+              fi
+
+              exit_code="$?"
+              if grep -Eq '429: Too Many Requests|code":10058' "$log_path" && [ "$attempt" -lt "$R2_UPLOAD_ATTEMPTS" ]; then
+                sleep_for="$(( attempt * attempt * 5 ))"
+                echo "R2 upload throttled for $rel on attempt $attempt/$R2_UPLOAD_ATTEMPTS; retrying in ${sleep_for}s"
+                sleep "$sleep_for"
+                attempt="$(( attempt + 1 ))"
+                continue
+              fi
+
               cat "$log_path"
-              return 1
-            fi
+              return "$exit_code"
+            done
 
             {
               flock 9
@@ -125,7 +145,7 @@ jobs:
             } 9>/tmp/r2-upload-count.lock
           }
           export -f upload_one
-          export R2_BUCKET_NAME DATA_VERSION TOTAL
+          export R2_BUCKET_NAME DATA_VERSION TOTAL R2_UPLOAD_ATTEMPTS
 
           xargs -r -P "$R2_UPLOAD_CONCURRENCY" -n 1 -d '\n' \
             bash -c 'upload_one "$1"' _ < /tmp/content-types.tsv
