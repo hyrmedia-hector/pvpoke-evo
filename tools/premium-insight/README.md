@@ -14,7 +14,9 @@ It intentionally trains task-specific tabular regressors behind one app-facing m
 - `scanInbox`
 - `battleLog`
 
-The first training source is deterministic PvPoke ranking data. The output is a versioned Core ML artifact set under:
+The first training source is deterministic PvPoke ranking data. Draft Simulator rows also derive deterministic scenario-evidence inputs from those rankings: standard smart, zero-shield, two-shield, shield-advantage, and shield-deficit summaries with shield state, floor score, volatility, pacing-counter risk, Aegislash pressure, and worst-response pressure columns. These features help Premium Insight explain scenario priorities; they do not replace exact app-side battle simulation.
+
+The output is a versioned Core ML artifact set under:
 
 ```text
 ml/versions/{dataVersion}/premium-insight-v1/

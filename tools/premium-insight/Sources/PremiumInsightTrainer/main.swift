@@ -6,7 +6,7 @@ private let modelId = "premium-insight-v1"
 private let schemaVersion = 1
 private let targetColumn = "targetScore"
 private let confidenceColumn = "targetConfidence"
-private let featureColumns = [
+private let baseFeatureColumns = [
     "cpCap",
     "rankIndex",
     "rating",
@@ -18,6 +18,49 @@ private let featureColumns = [
     "counterMean",
     "movesetCount",
     "chargedMoveCount"
+]
+private let scenarioProfileIds = [
+    "standardSmart",
+    "zeroShield",
+    "twoShield",
+    "shieldAdvantage",
+    "shieldDeficit"
+]
+private let scenarioFeatureColumns = [
+    "scenarioCount",
+    "scenarioMeanScore",
+    "scenarioFloorScore",
+    "scenarioCeilingScore",
+    "scenarioAverageVolatility",
+    "scenarioAverageWinRate",
+    "scenarioWorstTurns",
+    "scenarioPacingCounterCount",
+    "scenarioWorstResponsePenalty",
+    "scenarioShieldDeltaMean",
+    "scenarioWorstWinner",
+    "scenarioAegislashPressure",
+    "scenarioPacingCounterScore"
+] + scenarioProfileIds.flatMap { id in
+    [
+        "scenario_\(id)_score",
+        "scenario_\(id)_floor",
+        "scenario_\(id)_volatility",
+        "scenario_\(id)_winRate",
+        "scenario_\(id)_turns",
+        "scenario_\(id)_playerShields",
+        "scenario_\(id)_opponentShields",
+        "scenario_\(id)_shieldDelta",
+        "scenario_\(id)_winner",
+        "scenario_\(id)_pacingCounter",
+        "scenario_\(id)_worstResponsePenalty"
+    ]
+}
+private let featureColumns = baseFeatureColumns + scenarioFeatureColumns
+private let draftScenarioOutputNames = [
+    "scenarioPriority",
+    "shieldReservePressure",
+    "pacingCounterRisk",
+    "worstResponseRisk"
 ]
 
 enum PremiumInsightTask: String, CaseIterable, Codable {
@@ -92,36 +135,17 @@ struct Catalog: Decodable {
 
 struct TrainingRow {
     let task: PremiumInsightTask
-    let cpCap: Double
-    let rankIndex: Double
-    let rating: Double
-    let score: Double
-    let roleScore: Double
-    let matchupCount: Double
-    let matchupMean: Double
-    let counterCount: Double
-    let counterMean: Double
-    let movesetCount: Double
-    let chargedMoveCount: Double
+    let features: [String: Double]
     let targetScore: Double
     let targetConfidence: Double
 
     var csvValues: [String] {
-        [
-            cpCap,
-            rankIndex,
-            rating,
-            score,
-            roleScore,
-            matchupCount,
-            matchupMean,
-            counterCount,
-            counterMean,
-            movesetCount,
-            chargedMoveCount,
+        (
+            featureColumns.map { features[$0, default: 0] } + [
             targetScore,
             targetConfidence
-        ].map { String(format: "%.6f", $0) }
+            ]
+        ).map { String(format: "%.6f", $0) }
     }
 }
 
@@ -223,7 +247,7 @@ struct PremiumInsightTrainer {
                 inputFeatureNames: featureColumns,
                 scoreOutputName: targetColumn,
                 confidenceOutputName: nil,
-                additionalOutputNames: [],
+                additionalOutputNames: task == .draftSimulator ? draftScenarioOutputNames : [],
                 metrics: metrics
             ))
         }
@@ -295,9 +319,12 @@ struct PremiumInsightTrainer {
         let score = numeric(ranking["score"]) ?? clamped(rating / 10, min: 0, max: 100)
         let matchupRatings = ratings(from: ranking["matchups"])
         let counterRatings = ratings(from: ranking["counters"])
+        let counterIds = opponentIds(from: ranking["counters"])
         let moves = ranking["moves"] as? [String: Any]
         let chargedMoves = moves?["chargedMoves"] as? [[String: Any]] ?? []
+        let chargedMoveIds = chargedMoves.compactMap { $0["moveId"] as? String }
         let rowBase = RowBase(
+            speciesId: (ranking["speciesId"] as? String) ?? "",
             cpCap: cpCap,
             rankIndex: rankIndex,
             rating: rating,
@@ -308,25 +335,124 @@ struct PremiumInsightTrainer {
             counterCount: Double(counterRatings.count),
             counterMean: mean(counterRatings),
             movesetCount: Double((ranking["moveset"] as? [Any])?.count ?? 0),
-            chargedMoveCount: Double(chargedMoves.count)
+            chargedMoveCount: Double(chargedMoves.count),
+            chargedMoveIds: chargedMoveIds,
+            counterIds: counterIds
         )
 
         return PremiumInsightTask.allCases.map { task in
-            TrainingRow(
+            let features = featureValues(for: task, base: rowBase)
+            return TrainingRow(
                 task: task,
-                cpCap: rowBase.cpCap,
-                rankIndex: rowBase.rankIndex,
-                rating: rowBase.rating,
-                score: rowBase.score,
-                roleScore: rowBase.roleScore,
-                matchupCount: rowBase.matchupCount,
-                matchupMean: rowBase.matchupMean,
-                counterCount: rowBase.counterCount,
-                counterMean: rowBase.counterMean,
-                movesetCount: rowBase.movesetCount,
-                chargedMoveCount: rowBase.chargedMoveCount,
-                targetScore: targetScore(for: task, base: rowBase),
-                targetConfidence: targetConfidence(base: rowBase)
+                features: features,
+                targetScore: targetScore(for: task, base: rowBase, features: features),
+                targetConfidence: targetConfidence(for: task, base: rowBase, features: features)
+            )
+        }
+    }
+
+    private func featureValues(for task: PremiumInsightTask, base: RowBase) -> [String: Double] {
+        var features: [String: Double] = [
+            "cpCap": base.cpCap,
+            "rankIndex": base.rankIndex,
+            "rating": base.rating,
+            "score": base.score,
+            "roleScore": base.roleScore,
+            "matchupCount": base.matchupCount,
+            "matchupMean": base.matchupMean,
+            "counterCount": base.counterCount,
+            "counterMean": base.counterMean,
+            "movesetCount": base.movesetCount,
+            "chargedMoveCount": base.chargedMoveCount
+        ]
+
+        if task == .draftSimulator {
+            features.merge(draftScenarioFeatures(base: base), uniquingKeysWith: { _, rhs in rhs })
+        }
+        return features
+    }
+
+    private func draftScenarioFeatures(base: RowBase) -> [String: Double] {
+        let scenarios = draftTrainingScenarios(base: base)
+        let scores = scenarios.map(\.score)
+        let floors = scenarios.map(\.ratingSwing)
+        let volatilities = scenarios.map(\.volatility)
+        let worst = scenarios.min(by: { $0.ratingSwing < $1.ratingSwing })
+        let aegislashPressure = isAegislash(base.speciesId) ? 1.0 : 0.0
+        let pacingCounterScore = pacingCounterScore(base: base)
+
+        var features: [String: Double] = [
+            "scenarioCount": Double(scenarios.count),
+            "scenarioMeanScore": mean(scores),
+            "scenarioFloorScore": floors.min() ?? 0,
+            "scenarioCeilingScore": floors.max() ?? 0,
+            "scenarioAverageVolatility": mean(volatilities),
+            "scenarioAverageWinRate": mean(scenarios.map(\.winRate)),
+            "scenarioWorstTurns": Double(scenarios.map(\.turns).max() ?? 0),
+            "scenarioPacingCounterCount": Double(scenarios.filter { $0.pacingCounter > 0 }.count),
+            "scenarioWorstResponsePenalty": max(0, -(floors.min() ?? 0)),
+            "scenarioShieldDeltaMean": mean(scenarios.map(\.shieldDelta)),
+            "scenarioWorstWinner": Double(worst?.winner ?? -1),
+            "scenarioAegislashPressure": aegislashPressure,
+            "scenarioPacingCounterScore": pacingCounterScore
+        ]
+
+        for row in scenarios {
+            let prefix = "scenario_\(row.id)"
+            features["\(prefix)_score"] = row.score
+            features["\(prefix)_floor"] = row.ratingSwing
+            features["\(prefix)_volatility"] = row.volatility
+            features["\(prefix)_winRate"] = row.winRate
+            features["\(prefix)_turns"] = Double(row.turns)
+            features["\(prefix)_playerShields"] = Double(row.playerShields)
+            features["\(prefix)_opponentShields"] = Double(row.opponentShields)
+            features["\(prefix)_shieldDelta"] = row.shieldDelta
+            features["\(prefix)_winner"] = Double(row.winner)
+            features["\(prefix)_pacingCounter"] = row.pacingCounter
+            features["\(prefix)_worstResponsePenalty"] = max(0, -row.ratingSwing)
+        }
+        return features
+    }
+
+    private func draftTrainingScenarios(base: RowBase) -> [DraftTrainingScenario] {
+        let baseSwing = (base.score - 50) * 3.0
+            + (base.matchupMean - 500) * 0.12
+            - max(0, 500 - base.counterMean) * 0.10
+        let counterPressure = max(0, 500 - base.counterMean)
+        let chargedCoverage = min(base.chargedMoveCount, 4) / 4
+        let pacingScore = pacingCounterScore(base: base)
+        let aegislashPressure = isAegislash(base.speciesId) ? 1.0 : 0.0
+
+        return draftScenarioProfiles.map { profile in
+            let shieldDelta = Double(profile.playerShields - profile.opponentShields)
+            let shieldSwing = shieldDelta * 55
+            let shieldCount = Double(profile.playerShields + profile.opponentShields)
+            let zeroShieldAdjustment = profile.id == "zeroShield"
+                ? (pacingScore * 35 - aegislashPressure * 45)
+                : 0
+            let twoShieldAdjustment = profile.id == "twoShield"
+                ? (chargedCoverage * 24 + aegislashPressure * 18)
+                : 0
+            let score = baseSwing + shieldSwing + zeroShieldAdjustment + twoShieldAdjustment
+            let volatility = counterPressure * 0.25
+                + abs(shieldDelta) * 35
+                + (1 - min(base.matchupCount, 5) / 5) * 40
+                + (aegislashPressure * (profile.id == "zeroShield" ? 45 : 15))
+            let ratingSwing = score - volatility / 2
+            let winRate = clamped((score + 250) / 500, min: 0, max: 1)
+            let turns = Int(clamped(132 + shieldCount * 10 - pacingScore * 24, min: 80, max: 180).rounded())
+            let pacingCounter = score < 0 && (turns <= 120 || volatility >= 100) ? 1.0 : 0.0
+            return DraftTrainingScenario(
+                id: profile.id,
+                playerShields: profile.playerShields,
+                opponentShields: profile.opponentShields,
+                score: score,
+                ratingSwing: ratingSwing,
+                volatility: volatility,
+                winRate: winRate,
+                turns: turns,
+                winner: ratingSwing >= 0 ? 0 : 1,
+                pacingCounter: pacingCounter
             )
         }
     }
@@ -406,6 +532,7 @@ struct PremiumInsightTrainer {
 }
 
 private struct RowBase {
+    let speciesId: String
     let cpCap: Double
     let rankIndex: Double
     let rating: Double
@@ -417,7 +544,40 @@ private struct RowBase {
     let counterMean: Double
     let movesetCount: Double
     let chargedMoveCount: Double
+    let chargedMoveIds: [String]
+    let counterIds: [String]
 }
+
+private struct DraftScenarioProfile {
+    let id: String
+    let playerShields: Int
+    let opponentShields: Int
+}
+
+private struct DraftTrainingScenario {
+    let id: String
+    let playerShields: Int
+    let opponentShields: Int
+    let score: Double
+    let ratingSwing: Double
+    let volatility: Double
+    let winRate: Double
+    let turns: Int
+    let winner: Int
+    let pacingCounter: Double
+
+    var shieldDelta: Double {
+        Double(playerShields - opponentShields)
+    }
+}
+
+private let draftScenarioProfiles = [
+    DraftScenarioProfile(id: "standardSmart", playerShields: 1, opponentShields: 1),
+    DraftScenarioProfile(id: "zeroShield", playerShields: 0, opponentShields: 0),
+    DraftScenarioProfile(id: "twoShield", playerShields: 2, opponentShields: 2),
+    DraftScenarioProfile(id: "shieldAdvantage", playerShields: 1, opponentShields: 0),
+    DraftScenarioProfile(id: "shieldDeficit", playerShields: 0, opponentShields: 1)
+]
 
 private extension Data {
     func append(to url: URL) throws {
@@ -462,6 +622,11 @@ private func ratings(from value: Any?) -> [Double] {
     return rows.compactMap { numeric($0["rating"]) }
 }
 
+private func opponentIds(from value: Any?) -> [String] {
+    guard let rows = value as? [[String: Any]] else { return [] }
+    return rows.compactMap { $0["opponent"] as? String }
+}
+
 private func mean(_ values: [Double]) -> Double {
     guard values.isEmpty == false else { return 0 }
     return values.reduce(0, +) / Double(values.count)
@@ -486,14 +651,21 @@ private func roleScore(_ category: String) -> Double {
     }
 }
 
-private func targetScore(for task: PremiumInsightTask, base: RowBase) -> Double {
+private func targetScore(for task: PremiumInsightTask, base: RowBase, features: [String: Double]) -> Double {
     switch task {
     case .matchupImpact:
         return clamped(abs(base.matchupMean - base.counterMean) / 10 + base.score * 0.45, min: 0, max: 100)
     case .teamOptimizer:
         return clamped(base.score * 0.7 + base.roleScore * 30, min: 0, max: 100)
     case .draftSimulator:
-        return clamped(base.score * 0.55 + base.rating / 20 + base.roleScore * 15, min: 0, max: 100)
+        let scenarioFloor = features["scenarioFloorScore", default: 0]
+        let scenarioMean = features["scenarioMeanScore", default: 0]
+        let volatility = features["scenarioAverageVolatility", default: 0]
+        return clamped(
+            50 + scenarioMean / 8 + scenarioFloor / 12 - volatility / 18 + base.roleScore * 12,
+            min: 0,
+            max: 100
+        )
     case .metaTrend:
         return clamped(100 - log10(base.rankIndex + 1) * 22 + base.score * 0.2, min: 0, max: 100)
     case .battleFrontier:
@@ -509,14 +681,48 @@ private func targetScore(for task: PremiumInsightTask, base: RowBase) -> Double 
     }
 }
 
-private func targetConfidence(base: RowBase) -> Double {
+private func targetConfidence(for task: PremiumInsightTask, base: RowBase, features: [String: Double]) -> Double {
     let evidence = min(base.matchupCount + base.counterCount, 10) / 10
     let moveCoverage = min(base.movesetCount, 3) / 3
-    return clamped(0.4 + evidence * 0.4 + moveCoverage * 0.2, min: 0, max: 1)
+    let baseConfidence = 0.4 + evidence * 0.4 + moveCoverage * 0.2
+    guard task == .draftSimulator else {
+        return clamped(baseConfidence, min: 0, max: 1)
+    }
+    let volatilityPenalty = min(features["scenarioAverageVolatility", default: 0] / 500, 0.25)
+    let scenarioCoverage = min(features["scenarioCount", default: 0], 5) / 5
+    return clamped(baseConfidence + scenarioCoverage * 0.08 - volatilityPenalty, min: 0, max: 1)
 }
 
 private func clamped(_ value: Double, min lower: Double, max upper: Double) -> Double {
     Swift.max(lower, Swift.min(upper, value))
+}
+
+private func isAegislash(_ speciesId: String) -> Bool {
+    normalizedId(speciesId).contains("aegislash")
+}
+
+private func pacingCounterScore(base: RowBase) -> Double {
+    let chargedMovePressure = base.chargedMoveIds.filter(isPaceChargedMove).isEmpty ? 0.0 : 0.45
+    let counterPressure = base.counterIds.contains { normalizedId($0).contains("quagsire") } ? 0.35 : 0
+    let moveDepth = min(base.chargedMoveCount, 3) / 3 * 0.20
+    return clamped(chargedMovePressure + counterPressure + moveDepth, min: 0, max: 1)
+}
+
+private func isPaceChargedMove(_ moveId: String) -> Bool {
+    switch normalizedMoveId(moveId) {
+    case "AQUA_TAIL", "BODY_SLAM", "BRUTAL_SWING", "FIRE_PUNCH", "FOUL_PLAY", "SURF":
+        return true
+    default:
+        return false
+    }
+}
+
+private func normalizedId(_ value: String) -> String {
+    value.lowercased().replacingOccurrences(of: "-", with: "_")
+}
+
+private func normalizedMoveId(_ value: String) -> String {
+    value.uppercased().replacingOccurrences(of: "-", with: "_")
 }
 
 private func iso8601Now() -> String {
