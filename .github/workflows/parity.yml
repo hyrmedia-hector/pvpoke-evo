@@ -1,0 +1,218 @@
+name: PvPoke Data Parity
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+    inputs:
+      expected_data_tree_sha:
+        description: 'Upstream src/data tree detected by the parity controller'
+        required: false
+        type: string
+      alert_reason:
+        description: 'Controller-generated fail-closed alert; a non-empty value intentionally fails this run'
+        required: false
+        type: string
+  push:
+    branches: [master]
+    paths:
+      - 'src/data/**'
+      - 'tools/generate-api.py'
+      - 'tools/test_generate_api.py'
+      - 'tools/upload-r2-bundle.sh'
+      - '.github/workflows/parity.yml'
+
+concurrency:
+  group: pvpoke-data-parity
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      UNIFIED_API_BASE_URL: ${{ vars.UNIFIED_API_BASE_URL || 'https://api.ivleague-pogo.app' }}
+      R2_BUCKET_NAME: ${{ vars.R2_BUCKET_NAME || 'pvpoke-data' }}
+      R2_UPLOAD_CONCURRENCY: ${{ vars.R2_UPLOAD_CONCURRENCY || '4' }}
+      R2_UPLOAD_ATTEMPTS: ${{ vars.R2_UPLOAD_ATTEMPTS || '5' }}
+
+    steps:
+      - name: Checkout fork with full history
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+
+      - name: Surface controller alert
+        if: inputs.alert_reason != ''
+        env:
+          ALERT_REASON: ${{ inputs.alert_reason }}
+        run: |
+          echo "PvPoke parity controller alert: $ALERT_REASON" >&2
+          exit 1
+
+      - name: Merge upstream without discarding fork commits
+        id: sync
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/pvpoke/pvpoke.git 2>/dev/null || true
+          git fetch upstream master
+          git fetch origin master
+          git checkout master
+          git merge --ff-only origin/master
+
+          upstream_commit="$(git rev-parse upstream/master)"
+          upstream_tree="$(git rev-parse upstream/master:src/data)"
+          source_tree="$(git rev-parse HEAD:src/data)"
+          if [ "$source_tree" != "$upstream_tree" ]; then
+            git merge --no-edit upstream/master
+            test "$(git rev-parse HEAD:src/data)" = "$upstream_tree"
+            git push origin HEAD:master
+          fi
+
+          expected="${{ inputs.expected_data_tree_sha }}"
+          if [ -n "$expected" ] && [ "$expected" != "$upstream_tree" ]; then
+            echo "Controller requested $expected; upstream advanced to $upstream_tree. Publishing latest."
+          fi
+          echo "upstream_commit=$upstream_commit" >> "$GITHUB_OUTPUT"
+          echo "upstream_tree=$upstream_tree" >> "$GITHUB_OUTPUT"
+          echo "source_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Decide whether production needs promotion
+        id: freshness
+        shell: bash
+        run: |
+          set -euo pipefail
+          production_tree="$(curl --retry 3 --retry-all-errors --fail-with-body \
+            "$UNIFIED_API_BASE_URL/v1/catalog" | python3 -c \
+            'import json,sys; print(json.load(sys.stdin).get("sourceDataTreeSha", ""))' || true)"
+          if [ "${{ github.event_name }}" = "push" ] || [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+            echo "Explicit repository or operator event requires a fresh validated promotion."
+          elif [ "$production_tree" = "${{ steps.sync.outputs.upstream_tree }}" ]; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "Production already matches upstream src/data."
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+            echo "Production tree '$production_tree' must converge to '${{ steps.sync.outputs.upstream_tree }}'."
+          fi
+
+      - name: Set exact parity metadata
+        if: steps.freshness.outputs.publish == 'true'
+        shell: bash
+        run: |
+          generated_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          {
+            echo "PVPOKE_SOURCE_COMMIT=${{ steps.sync.outputs.source_commit }}"
+            echo "PVPOKE_UPSTREAM_COMMIT=${{ steps.sync.outputs.upstream_commit }}"
+            echo "PVPOKE_SOURCE_DATA_TREE_SHA=${{ steps.sync.outputs.upstream_tree }}"
+            echo "PVPOKE_UPSTREAM_DATA_TREE_SHA=${{ steps.sync.outputs.upstream_tree }}"
+            echo "PVPOKE_GENERATED_AT=$generated_at"
+            echo "PVPOKE_PROMOTED_AT=$generated_at"
+          } >> "$GITHUB_ENV"
+
+      - name: Generate and exhaustively validate candidate
+        if: steps.freshness.outputs.publish == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tools -p 'test_*.py'
+          python3 tools/generate-api.py
+          python3 tools/generate-api.py --validate-only
+          version_before="$(python3 -c 'import json; print(json.load(open("dist/v1/catalog.json"))["version"])')"
+          python3 tools/generate-api.py
+          version_after="$(python3 -c 'import json; print(json.load(open("dist/v1/catalog.json"))["version"])')"
+          test "$version_before" = "$version_after"
+          echo "DATA_VERSION=$version_after" >> "$GITHUB_ENV"
+
+      - name: Refuse to overwrite an existing immutable version
+        id: candidate
+        if: steps.freshness.outputs.publish == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          production_version="$(curl --retry 3 --retry-all-errors --fail-with-body \
+            "$UNIFIED_API_BASE_URL/v1/catalog" | python3 -c \
+            'import json,sys; print(json.load(sys.stdin).get("version", ""))' || true)"
+          if [ "$production_version" = "$DATA_VERSION" ]; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "Validated candidate $DATA_VERSION is already current; immutable objects will not be overwritten."
+          else
+            echo "publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install pinned Wrangler
+        if: steps.candidate.outputs.publish == 'true'
+        run: npm install --global wrangler@4.100.0
+
+      - name: Upload immutable candidate bundle
+        if: steps.candidate.outputs.publish == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: tools/upload-r2-bundle.sh
+
+      - name: Validate candidate from the serving backend
+        if: steps.candidate.outputs.publish == 'true'
+        env:
+          API_ADMIN_SECRET: ${{ secrets.API_ADMIN_SECRET }}
+        run: |
+          curl --retry 4 --retry-all-errors --fail-with-body \
+            -X POST -H "X-Admin-Secret: $API_ADMIN_SECRET" \
+            -H 'Content-Type: application/json' \
+            --data "{\"version\":\"$DATA_VERSION\"}" \
+            "$UNIFIED_API_BASE_URL/v1/admin/validate-candidate"
+
+      - name: Atomically promote and process candidate
+        if: steps.candidate.outputs.publish == 'true'
+        env:
+          API_ADMIN_SECRET: ${{ secrets.API_ADMIN_SECRET }}
+        run: |
+          curl --retry 4 --retry-all-errors --fail-with-body \
+            -X POST -H "X-Admin-Secret: $API_ADMIN_SECRET" \
+            -H 'Content-Type: application/json' \
+            --data "{\"version\":\"$DATA_VERSION\"}" \
+            "$UNIFIED_API_BASE_URL/v1/admin/promote-candidate"
+
+      - name: Verify production parity and health
+        if: steps.candidate.outputs.publish == 'true'
+        run: |
+          set -euo pipefail
+          curl --retry 4 --retry-all-errors --fail-with-body \
+            "$UNIFIED_API_BASE_URL/v1/catalog" > /tmp/catalog.json
+          curl --retry 4 --retry-all-errors --fail-with-body \
+            "$UNIFIED_API_BASE_URL/v1/health" > /tmp/health.json
+          python3 - <<'PY'
+          import json, os
+          catalog = json.load(open('/tmp/catalog.json'))
+          health = json.load(open('/tmp/health.json'))
+          expected = os.environ['PVPOKE_UPSTREAM_DATA_TREE_SHA']
+          assert catalog['sourceDataTreeSha'] == expected
+          assert catalog['upstreamDataTreeSha'] == expected
+          assert health['currentVersion']['sourceDataTreeSha'] == expected
+          assert health['status'] == 'current'
+          PY
+
+      - name: Alert operations on any failure
+        if: failure()
+        env:
+          OPS_ALERT_WEBHOOK: ${{ secrets.OPS_ALERT_WEBHOOK }}
+        run: |
+          if [ -z "$OPS_ALERT_WEBHOOK" ]; then
+            echo "OPS_ALERT_WEBHOOK is not configured; workflow failure remains visible in GitHub Actions." >&2
+            exit 0
+          fi
+          curl --retry 3 --retry-all-errors --fail-with-body \
+            -X POST -H 'Content-Type: application/json' \
+            --data "{\"event\":\"pvpoke_data_parity_workflow_failed\",\"repository\":\"${{ github.repository }}\",\"runUrl\":\"${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" \
+            "$OPS_ALERT_WEBHOOK"
