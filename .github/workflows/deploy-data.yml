@@ -1,4 +1,4 @@
-name: Deploy Data to Cloudflare R2 and Pages
+name: Publish PvPoke Data
 
 on:
   push:
@@ -7,7 +7,6 @@ on:
       - 'src/data/**'
       - 'tools/generate-api.py'
       - '.github/workflows/deploy-data.yml'
-      - '_headers'
   workflow_run:
     workflows: ["Sync Upstream"]
     types:
@@ -170,15 +169,3 @@ jobs:
             -X POST \
             -H "X-Admin-Secret: $API_ADMIN_SECRET" \
             "$UNIFIED_API_BASE_URL/v1/admin/process-version"
-
-      - name: Copy Cloudflare Pages headers
-        run: cp _headers dist/
-
-      - name: Deploy rollback mirror to Cloudflare Pages
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-        run: |
-          wrangler pages deploy dist \
-            --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT_NAME || 'pvpoke-data' }} \
-            --branch=master
