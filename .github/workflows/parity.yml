@@ -203,6 +203,27 @@ jobs:
           assert health['status'] == 'current'
           PY
 
+      - name: Nudge pvpoke-mobile model training (latency hook)
+        if: steps.candidate.outputs.publish == 'true'
+        continue-on-error: true
+        env:
+          MOBILE_DISPATCH_TOKEN: ${{ secrets.MOBILE_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "$MOBILE_DISPATCH_TOKEN" ]; then
+            echo "MOBILE_DISPATCH_TOKEN not configured; pvpoke-mobile's hourly schedule remains the training backbone."
+            exit 0
+          fi
+          curl --retry 3 --retry-all-errors --fail-with-body \
+            -X POST \
+            -H "Authorization: Bearer $MOBILE_DISPATCH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/HYRMedia-LLC/pvpoke-mobile/dispatches \
+            --data '{"event_type":"pvpoke-data-promoted"}'
+        # Latency optimization only: retraining is gated and scheduled in
+        # pvpoke-mobile, so a missing/expired token merely delays the next
+        # model by up to an hour. continue-on-error keeps data publishing
+        # unaffected by any failure here.
+
       - name: Alert operations on any failure
         if: failure()
         env:
