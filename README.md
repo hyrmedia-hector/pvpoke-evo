@@ -4,6 +4,10 @@
 
 This started as a passion project that went from “I wonder what this would look like quick” to “uh oh, people are going to actually see this.” Just so you know what you’re getting into.
 
+## Fork Automation
+
+This fork's `.github/workflows/parity.yml` is intentionally sync-only. Every five minutes it merges `pvpoke/pvpoke:master` when the canonical `src/data` tree changes, proves the fork has the exact same data tree, pushes the synchronized commit, and emits `pvpoke-data-synced` to `HYRMedia-LLC/iv-league-pogo`. Immediate handoff uses the narrowly scoped `IV_LEAGUE_DISPATCH_TOKEN` Actions secret; the downstream publisher schedule is the fallback if it is unavailable. Candidate generation, exhaustive validation, R2 upload, production promotion, and runtime health checks are owned by that repository and its Cloudflare Worker.
+
 ## Running PvPoke
 
 See the [Installation](https://github.com/pvpoke/pvpoke/wiki/Installation) section of the PvPoke Wiki.
