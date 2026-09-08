@@ -254,6 +254,7 @@ function PokeSelect(element, i){
 			// Display charged moves
 
 			$el.find(".move-bar").hide();
+			$el.find(".move-select.charged").attr("class", "move-select charged");
 
 			for(var i = 0; i < selectedPokemon.chargedMoves.length; i++){
 				if(selectedPokemon.chargedMoves[i]){
@@ -268,7 +269,6 @@ function PokeSelect(element, i){
 					$el.find(".move-bar").eq(i).find(".bar").attr("class","bar " + chargedMove.type);
 					$el.find(".move-bar").eq(i).find(".bar-back").attr("class","bar-back " + chargedMove.type);
 				} else{
-					$el.find(".move-select.charged").eq(i).attr("class", "move-select charged");
 					$el.find(".move-select.charged").eq(i).find("option").first().prop("selected","selected");
 				}
 			}
@@ -369,6 +369,12 @@ function PokeSelect(element, i){
 
 				$el.find(".mega-level-container").show();
 
+				if(selectedPokemon.megaLevel == 4){
+					$el.find("h3.cp").addClass("color-mega");
+				} else{
+					$el.find("h3.cp").removeClass("color-mega");
+				}
+
 				// Show Mega Evolution Bonus
 				let bonuses = ["1", "1.1", "1.2", "1.3"];
 
@@ -378,6 +384,7 @@ function PokeSelect(element, i){
 				$el.find(".mega-cp-container").hide();
 				$el.find(".mega-level-container").hide();
 				$el.find(".mega-evolution-bonus").hide();
+				$el.find("h3.cp").removeClass("color-mega");
 			}
 
 			// Show alternate form CP for form changing Pokemon
